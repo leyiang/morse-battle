@@ -18,6 +18,7 @@ export default class MorseCodeMachine {
     listen() {
         window.addEventListener("keydown", e => {
             const key = e.key;
+            if( key !== " " ) return;
 
             if( ! this.keyState.has(key) ) {
                 this.keyState.set( key, Date.now() );
@@ -26,6 +27,7 @@ export default class MorseCodeMachine {
 
         window.addEventListener("keyup", e => {
             const key = e.key;
+            if( key !== " " ) return;
 
             if( this.keyState.has(key) ) {
                 const timestamp = this.keyState.get( key );

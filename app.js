@@ -1,39 +1,50 @@
 import Player from "./model/Player.js";
+import Enemy from "./model/Enemy.js";
 import MorseCodeMachine from "./utils/MorseCodeMachine.js";
+import { sprites } from "./sprites.js";
+import World from "./model/World.js";
 
 const screen = document.getElementById("screen");
 const c = screen.getContext("2d");
-const machine = new MorseCodeMachine();
 
-const world = {
-    w: 500,
-    h: 800
-};
+const world = window.world = new World( 500, 500 );
 
-screen.width = world.w;
-screen.height = world.h;
+screen.width = world.info.width;
+screen.height = world.info.height;
 
-machine.listen();
+let player, enemy;
+sprites.load().then(() => {
+    enemy = new Enemy("enemyShip");
+    player = new Player("player");
 
-machine.onTrigger(( state ) => {
-    console.log( state );
+    world.appendEntity( player );
+    world.appendEntity( enemy );
+
+    start();
 });
 
-c.fillStyle = "#333";
-c.fillRect(0, 0, world.w, world.h );
+const start = () => {
+    player.aim( enemy );
 
-function loadImage( src ) {
-    return new Promise((resolve) => {
-        const image = new Image();
-        image.addEventListener("load", () => resolve(image));
-        image.src = src;
-    });
+    requestAnimationFrame( loop );
 }
 
-loadImage("./assets/player.png").then( playerImage => {
-    const player = new Player(world, {
-        normal: playerImage,
-    });
-
-    player.render( c );
+window.addEventListener("keydown", e => {
+    if( e.key === "Enter" ) {
+        player.fire();
+    }
 });
+
+function backgroundLayer() {
+    c.fillStyle = "#333";
+    c.fillRect(0, 0, world.info.width, world.info.height );
+}
+
+const loop = () => {
+    backgroundLayer();
+
+    world.update();
+    world.render( c );
+
+    requestAnimationFrame( loop );
+};
