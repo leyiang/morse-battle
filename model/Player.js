@@ -11,6 +11,7 @@ export default class Player {
 
         this.info.x = world.w / 2 - this.info.w / 2;
         this.info.y = world.h - this.info.h - 80;
+
     }
 
     render( c ) {
