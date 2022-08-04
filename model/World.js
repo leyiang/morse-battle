@@ -37,8 +37,13 @@ export default class World {
         this.player = new Player("player");
         this.appendEntity( this.player );
 
-        this.addEnemy("enemyShip", 100, 100, 5);
-        this.addEnemy("enemyUFO", 400, 100, 2);
+        this.addEnemy("enemyShip", 100, 100, 1);
+        this.addEnemy("enemyUFO", 400, 100, 1);
+
+        setInterval(() => {
+            this.addEnemy("enemyShip", 100, 100, 1);
+            this.addEnemy("enemyUFO", 400, 100, 1);
+        }, 5000 );
 
         window.addEventListener("keydown", e => {
             if( e.key === "Enter" ) {
@@ -86,10 +91,9 @@ export default class World {
             'm': '--',    'n': '-.',    'o': '---',  'p': '.--.',
             'q': '--.-',  'r': '.-.',   's': '...',  't': '-',
             'u': '..-',   'v': '...-',  'w': '.--',  'x': '-..-',
-            'y': '-.--',  'z': '--..',  ' ': '/',
+            'y': '-.--',  'z': '--..', '9': '----.', '0': '-----',
             '1': '.----', '2': '..---', '3': '...--', '4': '....-',
             '5': '.....', '6': '-....', '7': '--...', '8': '---..',
-            '9': '----.', '0': '-----',
         }
 
         let letter = random( Object.keys(alphabet) );

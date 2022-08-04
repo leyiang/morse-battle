@@ -1,5 +1,3 @@
-import { isolate } from "./shared.js";
-
 export default class MorseCodeMachine {
     static TAP = 0;
     static PRESS = 1;
