@@ -15,3 +15,9 @@ export function loadImage( src ) {
 export function isFunc( any ) {
     return typeof any === "function";
 }
+
+export function splice( arr, item ) {
+    const index = arr.indexOf( item );
+    if( index < 0 ) return;
+    arr.splice( index, 1 );
+}

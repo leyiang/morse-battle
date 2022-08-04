@@ -1,6 +1,5 @@
 import Player from "./model/Player.js";
 import Enemy from "./model/Enemy.js";
-import MorseCodeMachine from "./utils/MorseCodeMachine.js";
 import { sprites } from "./sprites.js";
 import World from "./model/World.js";
 
@@ -12,19 +11,32 @@ const world = window.world = new World( 500, 500 );
 screen.width = world.info.width;
 screen.height = world.info.height;
 
-let player, enemy;
+let player, enemy, boss;
 sprites.load().then(() => {
-    enemy = new Enemy("enemyShip");
+    enemy = new Enemy({
+       sprite: "enemyShip",
+       x: 100,
+       y: 100,
+    });
+
+    boss = new Enemy({
+        sprite: "enemyUFO",
+        x: 400,
+        y: 100,
+    });
+
     player = new Player("player");
 
     world.appendEntity( player );
     world.appendEntity( enemy );
+    world.appendEntity( boss );
 
     start();
 });
 
 const start = () => {
     player.aim( enemy );
+    player.aim( boss );
 
     requestAnimationFrame( loop );
 }

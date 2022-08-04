@@ -2,8 +2,8 @@ import { isFunc, isolate } from "../utils/shared.js";
 import Entity from "./Entity.js";
 
 export default class SpaceShuttle extends Entity {
-    constructor(x, y, w, h) {
-        super( x, y, w, h );
+    constructor( config ) {
+        super( config );
     }
 
     getDefaultSprite() {

@@ -1,20 +1,43 @@
 import { isFunc, isolate } from "../utils/shared.js";
 import Vec from "./Vec.js";
 
+export function defineEntityConfig( config ) {
+    if( typeof config === "string" ) {
+        return {
+            sprite: config,
+        }
+    }
+
+    return config;
+}
+
 export default class Entity extends Vec {
-    constructor(x, y, w, h) {
-        super(x, y);
+    constructor( config ) {
+        super( config.x, config.y );
 
-        this.size = new Vec(w, h);
+        config = defineEntityConfig( config );
+
         this.angle = null;
-
+        this.size = new Vec();
         this.vel = new Vec();
         this.acc = new Vec();
+        this.renderIndex = 10;
+
+        this.setSprite( config.sprite );
     }
 
     update() {
         this.vel.add( this.acc );
         this.add( this.vel );
+    }
+
+    setSprite( name ) {
+        this.sprite = world.sprites.get( name );
+
+        this.size.set(
+           this.sprite.width,
+           this.sprite.height
+        );
     }
 
     /**
@@ -33,7 +56,6 @@ export default class Entity extends Vec {
                 c.rotate( this.angle );
                 c.translate(-w/2, -h/2);
             }
-
 
             if( isFunc(callback) ) {
                 callback();

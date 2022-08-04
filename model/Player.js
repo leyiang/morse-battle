@@ -1,18 +1,48 @@
 import SpaceShuttle from "./SpaceShuttle.js";
 import Missile from "./Missile.js";
+import { splice } from "../utils/shared.js";
 
 export default class Player extends SpaceShuttle {
-    constructor( spriteName ) {
-        super( 0, 0, 99, 75 );
+    constructor(config) {
+        super( config );
+
         this.set(
             world.info.width / 2,
             world.info.height - 80
         );
 
-        this.sprite = world.sprites.get( spriteName );
-
-        this.targets = [];
+        this.targets = new Set();
         this.missles = [];
+
+        window.addEventListener("keydown", e => {
+            let xDir = 0, yDir = 0;
+
+            if( e.key === "ArrowLeft" ) {
+                xDir = -1;
+            }
+
+            if( e.key === "ArrowRight" ) {
+                xDir = 1;
+            }
+
+            if( e.key === "ArrowUp" ) {
+                yDir = -1;
+            }
+
+            if( e.key === "ArrowDown" ) {
+                yDir = 1;
+            }
+
+            let speed = .05;
+
+            this.acc.set(xDir, yDir).multNum( speed );
+        });
+
+        window.addEventListener("keyup", e => {
+            this.acc.set(0, 0);
+        });
+
+        this.renderInstance = null;
     }
 
     renderTargetLine(c) {
@@ -26,18 +56,22 @@ export default class Player extends SpaceShuttle {
         });
     }
 
-    render( c ) {
-        this.renderTargetLine(c);
-        this.translateCenter(c, () => {
-            c.drawImage(this.sprite, 0, 0, this.size.x, this.size.y );
-        });
+    render( renderQueue ) {
+        this.renderInstance = (c) => {
+            this.renderTargetLine(c);
+            this.translateCenter(c, () => {
+                c.drawImage(this.sprite, 0, 0, this.size.x, this.size.y );
+            });
+        };
+
+        renderQueue.addRender( this.renderInstance );
     }
 
     aim( shuttle ) {
         if( shuttle === this ) return;
 
         if( shuttle instanceof SpaceShuttle ) {
-            this.targets.push( shuttle );
+            this.targets.add( shuttle );
         }
     }
 
@@ -45,9 +79,17 @@ export default class Player extends SpaceShuttle {
         const { x, y } = this;
 
         this.targets.forEach( target => {
-            const missile = new Missile( x, y, "laser" );
+            const missile = new Missile(this, {
+                sprite: "laser",
+                x, y,
+            });
+
             missile.setTarget( target )
             world.appendEntity( missile );
         });
+    }
+
+    shuttleDestroyed( target ) {
+        this.targets.delete( target );
     }
 }
