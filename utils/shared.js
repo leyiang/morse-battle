@@ -1,6 +1,8 @@
 export function isolate(context, fn) {
     context.save();
+    context.beginPath();
     fn();
+    context.closePath();
     context.restore();
 }
 

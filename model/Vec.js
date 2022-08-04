@@ -61,4 +61,10 @@ export default class Vec {
     setMag( mag ) {
         return this.normalize().multNum(mag);
     }
+
+    limit( n ) {
+        if( this.mag() > n ) {
+            this.setMag( n );
+        }
+    }
 }

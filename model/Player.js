@@ -33,9 +33,7 @@ export default class Player extends SpaceShuttle {
                 yDir = 1;
             }
 
-            let speed = .05;
-
-            this.acc.set(xDir, yDir).multNum( speed );
+            this.acc.set(xDir, yDir).multNum( 10 );
         });
 
         window.addEventListener("keyup", e => {
@@ -81,7 +79,7 @@ export default class Player extends SpaceShuttle {
         this.targets.forEach( target => {
             const missile = new Missile(this, {
                 sprite: "laser",
-                x, y,
+                x, y, maxSpeed: 15
             });
 
             missile.setTarget( target )

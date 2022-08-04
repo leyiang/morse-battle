@@ -1,17 +1,12 @@
 import SpaceShuttle from "./SpaceShuttle.js";
-import { defineEntityConfig } from "./Entity.js";
+import { isolate } from "../utils/shared.js";
 
 export default class Enemy extends SpaceShuttle {
     constructor( config ) {
-        // spriteName, x, y, w, h
         super( config );
-        this.setSprite( config.sprite );
-        this.acc.set( Math.random(), Math.random() ).normalize().multNum(.01);
-    }
 
-    update() {
-        super.update();
-        if( this.vel.mag() > 5 ) this.vel.setMag(5);
+        this.setSprite( config.sprite );
+        this.acc.set( Math.random(), Math.random() ).setMag(.1);
     }
 
     getLetter() {
@@ -19,9 +14,17 @@ export default class Enemy extends SpaceShuttle {
     }
 
     render( renderQueue ) {
+        const radius = Math.min( this.size.x, this.size.y ) / 2;
         this.renderInstance = (c) => {
             this.translateCenter(c, () => {
                 c.drawImage( this.sprite, 0, 0, this.size.x, this.size.y );
+
+                // isolate(c, () => {
+                //     c.fillStyle = "pink";
+                //     c.globalAlpha = .5;
+                //     c.arc(0, 0, radius, 0, Math.PI * 2);
+                //     c.fill();
+                // })
 
                 c.fillStyle = "#000";
                 c.font = "bold 20px Arial";
@@ -36,5 +39,7 @@ export default class Enemy extends SpaceShuttle {
 
     explode() {
         world.removeEntity( this );
+        this.acc.set();
+        this.vel.set();
     }
 }
