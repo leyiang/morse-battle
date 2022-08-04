@@ -23,3 +23,8 @@ export function splice( arr, item ) {
     if( index < 0 ) return;
     arr.splice( index, 1 );
 }
+
+export function random( arr ) {
+    const index = Math.floor( Math.random() * arr.length );
+    return arr[ index ];
+}

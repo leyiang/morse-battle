@@ -6,10 +6,30 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Morse Battle</title>
+
+    <style>
+        #current-morse-code {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #000;
+            color: #FFF;
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: "Courier New", serif;
+            padding: 10px 1rem;
+            border-radius: 5px;
+
+            min-width: 120px;
+            height: 30px;
+        }
+        
+    </style>
 </head>
 <body>
 
     <canvas id="screen"></canvas>
+    <div id="current-morse-code"></div>
     <script src="./app.js" type="module"></script>
 
 </body>

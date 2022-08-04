@@ -18,6 +18,10 @@ export default class Missile extends Entity {
 
         const dist = this.target.clone().sub( this );
 
+        if( dist.mag() < 200 ) {
+            this.config.maxSpeed = 20;
+        }
+
         if( this.collide(this.target) ) {
             return this.explode();
         }
@@ -25,7 +29,7 @@ export default class Missile extends Entity {
         const dir = this.target.clone()
             .sub( this )
             .normalize()
-            .multNum( 4 );
+            .multNum( 8 );
 
         this.acc.copy( dir );
     }

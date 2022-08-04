@@ -1,10 +1,17 @@
 import SpaceShuttle from "./SpaceShuttle.js";
 import Missile from "./Missile.js";
 import { splice } from "../utils/shared.js";
+import Vec from "./Vec.js";
 
 export default class Player extends SpaceShuttle {
     constructor(config) {
         super( config );
+
+        this.sprite_list = {
+            normal: world.sprites.get("player"),
+            left: world.sprites.get("playerLeft"),
+            right: world.sprites.get("playerRight"),
+        }
 
         this.set(
             world.info.width / 2,
@@ -14,33 +21,62 @@ export default class Player extends SpaceShuttle {
         this.targets = new Set();
         this.missles = [];
 
+        this.friction = new Vec(1, 1);
+
         window.addEventListener("keydown", e => {
-            let xDir = 0, yDir = 0;
+            let { x, y } = this.acc.clone().divNum( 10 );
 
             if( e.key === "ArrowLeft" ) {
-                xDir = -1;
+                this.sprite = this.sprite_list.left;
+            } else if ( e.key === "ArrowRight" ) {
+                this.sprite = this.sprite_list.right;
             }
 
-            if( e.key === "ArrowRight" ) {
-                xDir = 1;
+            if( e.key === "ArrowLeft" || e.key === "ArrowRight" ) {
+                this.friction.x = 1;
+            } else if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+                this.friction.y = 1;
             }
 
-            if( e.key === "ArrowUp" ) {
-                yDir = -1;
-            }
+            if( e.key === "ArrowLeft" ) x = -1;
+            if( e.key === "ArrowRight" ) x = 1;
+            if( e.key === "ArrowUp" ) y = -1;
+            if( e.key === "ArrowDown" ) y = 1;
 
-            if( e.key === "ArrowDown" ) {
-                yDir = 1;
-            }
-
-            this.acc.set(xDir, yDir).multNum( 10 );
+            this.acc.set(x, y).multNum( 10 );
         });
 
         window.addEventListener("keyup", e => {
-            this.acc.set(0, 0);
+            let frictionRaw = .7;
+
+            if( e.key === "ArrowLeft" || e.key === "ArrowRight" ) {
+                this.sprite = this.sprite_list.normal;
+                this.friction.x = frictionRaw;
+            } else if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+                this.friction.y = frictionRaw;
+            }
+            //
+            // this.acc.set(0, 0);
         });
 
         this.renderInstance = null;
+    }
+
+    update() {
+        super.update();
+        // let drag = this.vel.clone();
+        // drag.normalize();
+        // drag.multNum( - 1 );
+        //
+        // let c = 0.1;
+        // let speed = this.vel.mag();
+        // drag.setMag(c * speed * speed );
+        //
+        // this.
+        this.acc.mul( this.friction );
+        this.vel.mul( this.friction );
+        // this.acc.multNum( .8 );
+        // this.vel.multNum( .8 );
     }
 
     renderTargetLine(c) {
@@ -73,13 +109,17 @@ export default class Player extends SpaceShuttle {
         }
     }
 
+    offTarget( target ) {
+        this.targets.delete( target );
+    }
+
     fire() {
         const { x, y } = this;
 
         this.targets.forEach( target => {
             const missile = new Missile(this, {
-                sprite: "laser",
-                x, y, maxSpeed: 15
+                sprite: "laser", x, y,
+                maxSpeed: 15
             });
 
             missile.setTarget( target )

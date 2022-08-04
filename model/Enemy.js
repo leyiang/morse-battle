@@ -2,15 +2,14 @@ import SpaceShuttle from "./SpaceShuttle.js";
 import { isolate } from "../utils/shared.js";
 
 export default class Enemy extends SpaceShuttle {
-    constructor( config ) {
+    constructor( config, letter, code ) {
         super( config );
 
-        this.setSprite( config.sprite );
-        this.acc.set( Math.random(), Math.random() ).setMag(.1);
-    }
+        this.letter = letter;
+        this.code = code;
 
-    getLetter() {
-        return "E";
+        this.setSprite( config.sprite );
+        // this.acc.set( Math.random(), Math.random() ).setMag(.1);
     }
 
     render( renderQueue ) {
@@ -29,8 +28,7 @@ export default class Enemy extends SpaceShuttle {
                 c.fillStyle = "#000";
                 c.font = "bold 20px Arial";
 
-                let letter = this.getLetter();
-                c.fillText(letter, this.size.x / 2 - 7, 19);
+                c.fillText(this.letter, this.size.x / 2 - 7, 19);
             });
         };
 

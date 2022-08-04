@@ -1,11 +1,10 @@
+import { isolate } from "./shared.js";
+
 export default class MorseCodeMachine {
     static TAP = 0;
     static PRESS = 1;
 
-    /**
-     * @param tapUnit (ms)
-     */
-    constructor( tapUnit = 50 ) {
+    constructor( holder = null, tapUnit = 50 ) {
         this.keyState = new Map();
         this.triggers = [];
 
@@ -13,6 +12,18 @@ export default class MorseCodeMachine {
             tapUnit,
             pressUnit: tapUnit * 3
         };
+
+        this.holder = holder;
+        this._word_value = "";
+    }
+
+    get word() {
+        return this._word_value;
+    }
+
+    set word( value ) {
+        this.holder.innerText = value;
+        this._word_value = value;
     }
 
     listen() {
@@ -34,8 +45,10 @@ export default class MorseCodeMachine {
                 const delta = Date.now() - timestamp;
 
                 if( delta > this.config.pressUnit ) {
+                    this.word += "-";
                     this.emit( MorseCodeMachine.PRESS );
                 } else if( delta > this.config.tapUnit ) {
+                    this.word += ".";
                     this.emit( MorseCodeMachine.TAP );
                 }
 
@@ -45,6 +58,10 @@ export default class MorseCodeMachine {
                 // Something went wrong.
             }
         });
+    }
+
+    clear() {
+        this.word = "";
     }
 
     onTrigger( callback ) {
@@ -57,7 +74,7 @@ export default class MorseCodeMachine {
         this.triggers.forEach( callback => {
             // ture => press, false => tap
             const state = type === MorseCodeMachine.PRESS;
-            if( typeof callback === "function" ) callback( state );
+            if( typeof callback === "function" ) callback( state, this.word );
         });
     }
 }

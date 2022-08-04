@@ -43,7 +43,9 @@ export default class Vec {
     }
 
     normalize() {
-        this.divNum( this.mag() );
+        let mag = this.mag();
+        if( mag === 0 ) return this;
+        this.divNum( mag );
         return this;
     }
 
@@ -66,5 +68,10 @@ export default class Vec {
         if( this.mag() > n ) {
             this.setMag( n );
         }
+    }
+
+    mul( vec ) {
+        this.x *= vec.x;
+        this.y *= vec.y;
     }
 }
