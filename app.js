@@ -17,14 +17,14 @@ sprites.load().then(() => {
         sprite: "enemyShip",
         x: 100,
         y: 100,
-        maxSpeed: 1,
+        maxSpeed: 5,
     });
 
     boss = new Enemy({
         sprite: "enemyUFO",
         x: 400,
         y: 100,
-        maxSpeed: 1,
+        maxSpeed: 2,
     });
 
     player = new Player("player");
