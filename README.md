@@ -8,4 +8,4 @@ Morse Battle is a remake of simple and classic space shuttle game, but you contr
     - Long press <Space> to input morse code <dash>
 - Use <Arrow> keys to move the shuttle around
 
-
+PS: Remember to use your friend's keyboard. :)
