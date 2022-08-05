@@ -1,5 +1,5 @@
 import SpaceShuttle from "./SpaceShuttle.js";
-import { isolate } from "../utils/shared.js";
+import { isolate, randomInt } from "../utils/shared.js";
 
 export default class Enemy extends SpaceShuttle {
     constructor( config, letter, code ) {
@@ -7,9 +7,19 @@ export default class Enemy extends SpaceShuttle {
 
         this.letter = letter;
         this.code = code;
+        this.removed = false;
 
         this.setSprite( config.sprite );
-        this.acc.set( Math.random(), Math.random() ).setMag(.1);
+        this.acc.set( randomInt(2), randomInt(10) ).setMag(.1);
+    }
+
+    update() {
+        super.update();
+
+        if( this.x < 0 || this.x > world.info.width + this.size.x || this.y > world.info.height + this.size.y ) {
+            world.slip( this );
+            this.remove()
+        }
     }
 
     render( renderQueue ) {
@@ -43,7 +53,12 @@ export default class Enemy extends SpaceShuttle {
     }
 
     explode() {
+        this.remove();
+    }
+
+    remove() {
         world.removeEntity( this );
+        this.removed = true;
         this.acc.set();
         this.vel.set();
     }

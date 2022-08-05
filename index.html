@@ -8,29 +8,147 @@
     <title>Morse Battle</title>
 
     <style>
+        @font-face {
+            font-family: "Space";
+            src: url("./assets/SpaceMission-rgyw9.otf");
+        }
+
+        body {
+            margin: 0;
+            color: #FFF;
+            font-family: system-ui;
+        }
+
+        canvas {
+            display: block;
+        }
+
         #current-morse-code {
-            position: fixed;
-            top: 20px;
+            position: absolute;
+            bottom: 20px;
             right: 20px;
             background: #000;
             color: #FFF;
             font-size: 2rem;
             font-weight: 700;
             font-family: "Courier New", serif;
-            padding: 10px 1rem;
+            padding: 8px 12px;
             border-radius: 5px;
 
             min-width: 120px;
+            max-width: 120px;
+            overflow: hidden;
             height: 30px;
+            border: 1px solid #999;
         }
-        
+
+        .page {
+            display: none;
+            position: relative;
+            width: 480px;
+            height: 800px;
+            background: linear-gradient(45deg, #153862, #3567a3);
+            box-sizing: border-box;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        .title {
+            font-family: Space,serif;
+            margin: 0;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            font-size: 4rem;
+            position: relative;
+        }
+
+        .title span {
+            background: linear-gradient(#ffeb00, #ff701d);
+            padding: 0 10px 0 20px;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0px 3px 0 rgba(0, 0, 0, 0.7));
+        }
+
+        .title :first-child {
+            letter-spacing: 4px;
+        }
+
+        .btn {
+            font-family: Space,serif;
+            cursor: pointer;
+            border: none;
+
+            font-size: 2rem;
+            color: #FFF;
+
+            display: block;
+            background-color: #217ec1;
+            box-shadow: inset 0 5px 6px #28f5ffde, inset 0 -2px 3px #28f5ffde, inset 0 4px 0 #FFF;
+            padding: 14px 20px 8px;
+
+            width: 60%;
+        }
+
+        #front-page {
+            padding: 1rem;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .f1 {
+            flex: 1;
+        }
+
+        .align-center {
+            align-items: center;
+        }
+
+        .how-to-play {
+            text-align: center;
+            margin: 4rem 0;
+        }
+
+        .justify-center {
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
 
-    <canvas id="screen"></canvas>
-    <div id="current-morse-code"></div>
-    <script src="./app.js" type="module"></script>
+<!--    <div class="page active flex flex-col align-center justify-center" id="front-page">-->
+<!--        <h1 class="title">-->
+<!--            <span title="Morse">Morse</span>-->
+<!--            <span title="Battle">Battle</span>-->
+<!--        </h1>-->
+
+<!--        <div class="how-to-play">-->
+<!--            <p>Using <strong>Space</strong> to Input <strong>Morse Code</strong></p>-->
+<!--            <p>Input Correct Morse Code to <strong>Aim</strong></p>-->
+<!--            <p>Hit <strong>Enter</strong> to Fire!</p>-->
+<!--        </div>-->
+
+<!--        <button class="btn start-btn">Play</button>-->
+<!--    </div>-->
+
+    <div class="page active" id="game-page">
+        <button class="btn">@</button>
+
+        <canvas id="screen"></canvas>
+        <div id="current-morse-code"></div>
+        <script src="./app.js" type="module"></script>
+    </div>
 
 </body>
 </html>

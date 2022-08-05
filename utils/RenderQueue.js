@@ -6,6 +6,7 @@ export default class RenderQueue {
     }
 
     render( c ) {
+        c.clearRect(0, 0, c.canvas.width, c.canvas.height );
         this.queue.forEach( render => {
             render( c );
         });

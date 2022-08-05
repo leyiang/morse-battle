@@ -64,23 +64,18 @@ export default class Player extends SpaceShuttle {
 
     update() {
         super.update();
-        // let drag = this.vel.clone();
-        // drag.normalize();
-        // drag.multNum( - 1 );
-        //
-        // let c = 0.1;
-        // let speed = this.vel.mag();
-        // drag.setMag(c * speed * speed );
-        //
-        // this.
+
         this.acc.mul( this.friction );
         this.vel.mul( this.friction );
-        // this.acc.multNum( .8 );
-        // this.vel.multNum( .8 );
     }
 
     renderTargetLine(c) {
         this.targets.forEach( target => {
+            if( target.removed ) {
+                this.offTarget( target );
+                return;
+            }
+
             c.beginPath();
             c.moveTo( this.x, this.y );
             c.lineTo( target.x, target.y );

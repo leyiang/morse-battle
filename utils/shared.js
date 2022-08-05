@@ -28,3 +28,7 @@ export function random( arr ) {
     const index = Math.floor( Math.random() * arr.length );
     return arr[ index ];
 }
+
+export function randomInt( max = 10, min = 0 ) {
+    return Math.floor( Math.random() * (max - min) ) + min;
+}

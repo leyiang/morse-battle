@@ -1,6 +1,6 @@
 import MorseCodeMachine from "../utils/MorseCodeMachine.js";
 import { sprites } from "../sprites.js";
-import { random, splice } from "../utils/shared.js";
+import { random, randomInt, splice } from "../utils/shared.js";
 import RenderQueue from "../utils/RenderQueue.js";
 import Enemy from "./Enemy.js";
 import Player from "./Player.js";
@@ -20,6 +20,8 @@ export default class World {
         this.entities = [];
         this.enemies = [];
         this.player = null;
+
+        this.life = 10;
     }
 
     init() {
@@ -37,12 +39,10 @@ export default class World {
         this.player = new Player("player");
         this.appendEntity( this.player );
 
-        this.addEnemy("enemyShip", 100, 100, 1);
-        this.addEnemy("enemyUFO", 400, 100, 1);
+        this.addEnemy();
 
         setInterval(() => {
-            this.addEnemy("enemyShip", 100, 100, 1);
-            this.addEnemy("enemyUFO", 400, 100, 1);
+            this.addEnemy();
         }, 5000 );
 
         window.addEventListener("keydown", e => {
@@ -103,10 +103,34 @@ export default class World {
         return [letter, code];
     }
 
-    addEnemy( sprite, x, y, maxSpeed ) {
+    addEnemy() {
+        const types = [
+            {
+                name: "enemyShip",
+                sprite: world.sprites.get("enemyShip"),
+                maxSpeed: 2,
+            },
+            {
+                name: "enemyUFO",
+                sprite: world.sprites.get("enemyUFO"),
+                maxSpeed: 2,
+            },
+        ];
+
+        const type = random( types );
+        const {width, height} = type.sprite;
+
+        const x = randomInt( world.info.width - width/2, width );
+        const y = -1 * height;
+
         const [letter, code] = this.getLetter();
-        const enemy = new Enemy({ sprite, x, y, maxSpeed }, letter, code);
+        const enemy = new Enemy({ sprite: type.name, x, y, maxSpeed: type.maxSpeed }, letter, code);
         this.enemies.push( enemy );
         this.appendEntity( enemy );
+    }
+
+    slip( target ) {
+        this.life --;
+        console.log( this.life );
     }
 }
