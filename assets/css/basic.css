@@ -1,0 +1,83 @@
+@font-face {
+    font-family: "Space";
+    src: url("../fonts/SpaceMission-rgyw9.otf");
+}
+
+body {
+    margin: 0;
+    color: #FFF;
+    font-family: system-ui;
+}
+
+canvas {
+    display: block;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.f1 {
+    flex: 1;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.page {
+    display: none;
+    position: relative;
+    width: 480px;
+    height: 800px;
+    background: linear-gradient(45deg, #112844, #16529b);
+    box-sizing: border-box;
+}
+
+.page.active {
+    display: flex;
+}
+
+.btn {
+    font-family: Space,serif;
+    cursor: pointer;
+    border: none;
+
+    font-size: 2rem;
+    color: #FFF;
+
+    display: block;
+    background-color: #217ec1;
+    box-shadow: inset 0 5px 6px #28f5ffde, inset 0 -2px 3px #28f5ffde, inset 0 4px 0 #FFF;
+}
+
+.display-btn {
+    padding: 14px 20px 8px;
+    width: 60%;
+}
+
+.icon-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;align-items: center;justify-content: center;
+    text-align: center;
+    line-height: 48px;
+}
+
+.icon-btn span {
+    margin-top: 10px;
+    margin-left: 8px;
+}
+
+.ml-auto {
+    margin-left: auto;
+}

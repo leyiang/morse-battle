@@ -54,6 +54,7 @@ export default class Enemy extends SpaceShuttle {
 
     explode() {
         this.remove();
+        world.rocket ++;
     }
 
     remove() {

@@ -21,10 +21,25 @@ export default class World {
         this.enemies = [];
         this.player = null;
 
-        this.life = 10;
+        this.status = {
+            life: 10,
+            rocket: 0,
+        }
     }
 
     init() {
+        ["life", "rocket"].forEach( key => {
+            Object.defineProperty(this, key, {
+                get() {
+                    return this.status[ key ]
+                },
+                set( val ) {
+                    this.status[ key ] = val;
+                    document.querySelector(`.${ key }-status`).innerText = val;
+                }
+            })
+        });
+
         this.machine.listen();
         this.machine.onTrigger(( state, word ) => {
             this.enemies.forEach( enemy => {
@@ -36,7 +51,11 @@ export default class World {
             });
         });
 
-        this.player = new Player("player");
+        this.player = new Player({
+            sprite: "player",
+            maxSpeed: 10,
+        });
+
         this.appendEntity( this.player );
 
         this.addEnemy();

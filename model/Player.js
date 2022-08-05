@@ -1,6 +1,5 @@
 import SpaceShuttle from "./SpaceShuttle.js";
 import Missile from "./Missile.js";
-import { splice } from "../utils/shared.js";
 import Vec from "./Vec.js";
 
 export default class Player extends SpaceShuttle {
@@ -24,7 +23,7 @@ export default class Player extends SpaceShuttle {
         this.friction = new Vec(1, 1);
 
         window.addEventListener("keydown", e => {
-            let { x, y } = this.acc.clone().divNum( 10 );
+            let { x, y } = this.acc.clone().divNum( 2 );
 
             if( e.key === "ArrowLeft" ) {
                 this.sprite = this.sprite_list.left;
@@ -43,7 +42,7 @@ export default class Player extends SpaceShuttle {
             if( e.key === "ArrowUp" ) y = -1;
             if( e.key === "ArrowDown" ) y = 1;
 
-            this.acc.set(x, y).multNum( 10 );
+            this.acc.set(x, y).multNum( 2 );
         });
 
         window.addEventListener("keyup", e => {
