@@ -21,44 +21,41 @@ export default class Player extends SpaceShuttle {
         this.missles = [];
 
         this.friction = new Vec(1, 1);
-
-        window.addEventListener("keydown", e => {
-            let { x, y } = this.acc.clone().divNum( 2 );
-
-            if( e.key === "ArrowLeft" ) {
-                this.sprite = this.sprite_list.left;
-            } else if ( e.key === "ArrowRight" ) {
-                this.sprite = this.sprite_list.right;
-            }
-
-            if( e.key === "ArrowLeft" || e.key === "ArrowRight" ) {
-                this.friction.x = 1;
-            } else if (e.key === "ArrowUp" || e.key === "ArrowDown") {
-                this.friction.y = 1;
-            }
-
-            if( e.key === "ArrowLeft" ) x = -1;
-            if( e.key === "ArrowRight" ) x = 1;
-            if( e.key === "ArrowUp" ) y = -1;
-            if( e.key === "ArrowDown" ) y = 1;
-
-            this.acc.set(x, y).multNum( 2 );
-        });
-
-        window.addEventListener("keyup", e => {
-            let frictionRaw = .7;
-
-            if( e.key === "ArrowLeft" || e.key === "ArrowRight" ) {
-                this.sprite = this.sprite_list.normal;
-                this.friction.x = frictionRaw;
-            } else if (e.key === "ArrowUp" || e.key === "ArrowDown") {
-                this.friction.y = frictionRaw;
-            }
-            //
-            // this.acc.set(0, 0);
-        });
-
         this.renderInstance = null;
+    }
+
+    onKeydown(e) {
+        let { x, y } = this.acc.clone().divNum( 2 );
+
+        if( e.key === "ArrowLeft" ) {
+            this.sprite = this.sprite_list.left;
+        } else if ( e.key === "ArrowRight" ) {
+            this.sprite = this.sprite_list.right;
+        }
+
+        if( e.key === "ArrowLeft" || e.key === "ArrowRight" ) {
+            this.friction.x = 1;
+        } else if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+            this.friction.y = 1;
+        }
+
+        if( e.key === "ArrowLeft" ) x = -1;
+        if( e.key === "ArrowRight" ) x = 1;
+        if( e.key === "ArrowUp" ) y = -1;
+        if( e.key === "ArrowDown" ) y = 1;
+
+        this.acc.set(x, y).multNum( 2 );
+    }
+
+    onKeyup(e) {
+        let frictionRaw = .7;
+
+        if( e.key === "ArrowLeft" || e.key === "ArrowRight" ) {
+            this.sprite = this.sprite_list.normal;
+            this.friction.x = frictionRaw;
+        } else if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+            this.friction.y = frictionRaw;
+        }
     }
 
     update() {

@@ -6,6 +6,8 @@ export default class RenderQueue {
     }
 
     render( c ) {
+        if( world.stopped ) return;
+
         c.clearRect(0, 0, c.canvas.width, c.canvas.height );
         this.queue.forEach( render => {
             render( c );

@@ -13,6 +13,10 @@
 <body>
 
     <div class="page flex-col align-center justify-center" id="front-page">
+        <button class="btn ranking-btn icon-btn router" data-to="ranking">
+            <span class="pointer-none">R</span>
+        </button>
+
         <h1 class="title">
             <span title="Morse">Morse</span>
             <span title="Battle">Battle</span>
@@ -24,12 +28,12 @@
             <p>Hit <strong>Enter</strong> to Fire!</p>
         </div>
 
-        <button class="btn start-btn display-btn">Play</button>
+        <button class="btn start-btn display-btn router" data-to="game">Play</button>
     </div>
 
     <div class="page" id="game-page">
-        <button class="btn home-btn icon-btn">
-            <span>H</span>
+        <button class="btn home-btn icon-btn router" data-to="front">
+            <span class="pointer-none">H</span>
         </button>
 
         <div class="status-bar flex flex-col">
@@ -37,11 +41,16 @@
             <div class="status rocket-status">0</div>
         </div>
 
+        <div class="level-wrap">
+            <h2 class="level-up">Speed UP!</h2>
+            <h2 class="level-up-blink">Speed UP!</h2>
+        </div>
+
         <canvas id="screen"></canvas>
         <div id="current-morse-code"></div>
         <script src="./app.js" type="module"></script>
 
-        <div class="modal">
+        <div class="modal lose-modal">
             <div class="mask"></div>
 
             <div class="result modal-body flex flex-col gap">
@@ -49,32 +58,37 @@
 
                 <strong class="flex flex-col justify-center align-center gap" style="font-size: 1.5rem; margin-bottom: 1rem; color: #0065af">
                     <span>Your score is</span>
-                    <strong>:(</strong>
+                    <strong class="score-wrap">123</strong>
                 </strong>
 
-                <button class="btn display-btn">Again</button>
-                <button class="btn display-btn">Ranking</button>
+                <button class="btn display-btn again-btn">Again</button>
+                <button class="btn display-btn router" data-to="ranking">Ranking</button>
             </div>
         </div>
-<!--        <div class="modal">-->
-<!--            <div class="mask"></div>-->
 
-<!--            <div class="result modal-body flex flex-col gap">-->
-<!--                <h2 class="board-header">You Win!</h2>-->
+        <div class="modal win-modal">
+            <div class="mask"></div>
 
-<!--                <strong class="flex flex-col justify-center align-center gap" style="font-size: 1.5rem; margin-bottom: 1rem; color: #0065af">-->
-<!--                    <span>Your score is</span>-->
-<!--                    <strong>123</strong>-->
-<!--                </strong>-->
+            <div class="result modal-body flex flex-col gap">
+                <h2 class="board-header">You Win!</h2>
 
-<!--                <button class="btn display-btn">Again</button>-->
-<!--                <button class="btn display-btn">Ranking</button>-->
-<!--            </div>-->
-<!--        </div>-->
+                <strong class="flex flex-col justify-center align-center gap" style="font-size: 1.5rem; margin-bottom: 1rem; color: #0065af">
+                    <span>Your score is</span>
+                    <strong>123</strong>
+                </strong>
+
+                <button class="btn display-btn again-btn">Again</button>
+                <button class="btn display-btn router" data-to="ranking">Ranking</button>
+            </div>
+        </div>
     </div>
 
-    <div class="page active flex-col align-center justify-center gap" id="ranking-page">
-        <h1 class="title">
+    <div class="page flex-col align-center justify-center gap" id="ranking-page">
+        <button class="btn ranking-btn icon-btn router" data-to="front">
+            <span class="pointer-none">H</span>
+        </button>
+
+        <h1 class="title ranking-title">
             <span title="Morse">Ranking</span>
         </h1>
 

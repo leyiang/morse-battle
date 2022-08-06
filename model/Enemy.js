@@ -10,7 +10,7 @@ export default class Enemy extends SpaceShuttle {
         this.removed = false;
 
         this.setSprite( config.sprite );
-        this.acc.set( randomInt(2), randomInt(10) ).setMag(.1);
+        this.acc.set( 0, randomInt(10) ).setMag(.1 + world.level * .02);
     }
 
     update() {

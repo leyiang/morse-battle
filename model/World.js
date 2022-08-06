@@ -1,9 +1,11 @@
-import MorseCodeMachine from "../utils/MorseCodeMachine.js";
 import { sprites } from "../sprites.js";
 import { random, randomInt, splice } from "../utils/shared.js";
 import RenderQueue from "../utils/RenderQueue.js";
 import Enemy from "./Enemy.js";
 import Player from "./Player.js";
+import MorseCodeMachine from "../utils/MorseCodeMachine.js";
+import Timer from "../utils/Timer.js";
+import store from "../utils/store.js";
 
 export default class World {
     constructor(width, height) {
@@ -20,6 +22,9 @@ export default class World {
         this.entities = [];
         this.enemies = [];
         this.player = null;
+        this.stopped = false;
+        this.level = 1;
+        this.name = "ABC";
 
         this.status = {
             life: 10,
@@ -33,7 +38,26 @@ export default class World {
                 get() {
                     return this.status[ key ]
                 },
+
                 set( val ) {
+                    if( this.stopped ) return;
+
+                    if( key === "rocket" ) {
+                        // if( val >= 5 ) {
+                        //     setTimeout(() => {
+                        //         this.win();
+                        //     });
+                        // }
+
+                        if( val > this.level * 5 ) {
+                            this.levelUp();
+                        }
+                    }
+
+                    if( val <= 0 && key === "life" ) {
+                        this.lose();
+                    }
+
                     this.status[ key ] = val;
                     document.querySelector(`.${ key }-status`).innerText = val;
                 }
@@ -51,20 +75,53 @@ export default class World {
             });
         });
 
+        this.setUpGame();
+    }
+
+    // this.levelUp();
+
+    setUpGame() {
+        this.rocket = 0;
+        this.life = 10;
+        this.entities = [];
+        this.enemies = [];
+        this.renderQueue.queue = [];
+
         this.player = new Player({
             sprite: "player",
             maxSpeed: 10,
         });
 
         this.appendEntity( this.player );
-
         this.addEnemy();
+        this.initListener();
+    }
 
-        setInterval(() => {
-            this.addEnemy();
-        }, 5000 );
+    initListener() {
+        let time = 0;
+        let lastTime = Date.now();
+        this.timer = new Timer();
+        this.timer.update = (delta) => {
+            time += (delta * 1000);
+            if( this.stopped ) return;
 
-        window.addEventListener("keydown", e => {
+            let singleTime = 3000 - this.level * 100;
+
+            if( singleTime < 50 ) {
+                singleTime = 50;
+            }
+
+            if( time >= singleTime ) {
+                let now = Date.now();
+                console.log( now - lastTime );
+                lastTime = now;
+                this.addEnemy();
+                time = 0;
+            }
+        }
+        this.timer.start();
+
+        this.onKeydown = e => {
             if( e.key === "Enter" ) {
                 this.machine.clear();
                 this.player.fire();
@@ -77,10 +134,21 @@ export default class World {
                     }
                 });
             }
-        });
+
+            this.player.onKeydown(e);
+        }
+
+        this.onKeyup = e => {
+            this.player.onKeyup(e);
+        }
+
+        window.addEventListener("keydown", this.onKeydown);
+        window.addEventListener("keyup", this.onKeyup);
     }
 
     update() {
+        if( this.stopped ) return;
+
         this.entities.forEach( entity => {
             entity.update();
         });
@@ -118,7 +186,6 @@ export default class World {
         let letter = random( Object.keys(alphabet) );
         let code = alphabet[ letter ];
 
-        console.log( code, letter );
         return [letter, code];
     }
 
@@ -127,12 +194,12 @@ export default class World {
             {
                 name: "enemyShip",
                 sprite: world.sprites.get("enemyShip"),
-                maxSpeed: 2,
+                maxSpeed: 1.5 + (world.level - 1) * .1,
             },
             {
                 name: "enemyUFO",
                 sprite: world.sprites.get("enemyUFO"),
-                maxSpeed: 2,
+                maxSpeed: 1 + (world.level - 1) * .2,
             },
         ];
 
@@ -140,7 +207,7 @@ export default class World {
         const {width, height} = type.sprite;
 
         const x = randomInt( world.info.width - width/2, width );
-        const y = -1 * height;
+        const y = 0 - height/2;
 
         const [letter, code] = this.getLetter();
         const enemy = new Enemy({ sprite: type.name, x, y, maxSpeed: type.maxSpeed }, letter, code);
@@ -150,6 +217,60 @@ export default class World {
 
     slip( target ) {
         this.life --;
-        console.log( this.life );
+    }
+
+    win() {
+        document.querySelector(".score-wrap").innerText = this.rocket;
+        document.querySelector(".win-modal").classList.add("show");
+        this.save();
+        this.stop();
+    }
+
+    lose() {
+        document.querySelector(".score-wrap").innerText = this.rocket;
+        document.querySelector(".lose-modal").classList.add("show");
+        this.save();
+        this.stop();
+    }
+
+    stop() {
+        this.stopped = true;
+
+        window.removeEventListener("keydown", this.onKeydown );
+        window.removeEventListener("keyup", this.onKeyup );
+
+        this.timer.stop();
+        clearInterval( this.intervalID );
+    }
+
+    again() {
+        document.querySelectorAll(".modal").forEach( modal => {
+            modal.classList.remove("show")
+        });
+
+        this.stopped = false;
+        this.setUpGame();
+    }
+
+    levelUp() {
+        const wrap = document.querySelector(".level-wrap");
+        wrap.classList.add("show");
+
+        wrap.addEventListener("animationend", () => {
+            wrap.classList.remove("show");
+        });
+
+        this.level ++;
+    }
+
+    save() {
+        const list = store.get("ranking", []);
+
+        list.push({
+            name: this.name,
+            score: this.rocket,
+        });
+
+        store.set("ranking", list);
     }
 }

@@ -9,6 +9,12 @@ Front Page
     padding: 1rem;
 }
 
+.ranking-btn {
+    position: absolute;
+    top: var(--gap);
+    right: var(--gap);
+}
+
 .how-to-play {
     text-align: center;
     margin: 4rem 0;
@@ -118,6 +124,14 @@ Modal
     background: rgba(0, 0, 0, 0.5);
 }
 
+.modal {
+    display: none;
+}
+
+.modal.show {
+    display: flex;
+}
+
 .modal-body {
     position: absolute;
     top: 50%;
@@ -212,6 +226,9 @@ Modal
     gap: 1rem;
 }
 
+/**
+Ranking Page
+ */
 .ranking-list {
     width: 100%;
     min-height: 70%;
@@ -260,5 +277,77 @@ Modal
 }
 
 #ranking-page {
-    padding-top: 3rem;
+}
+
+.pointer-none {
+    pointer-events: none;
+}
+
+.ranking-list {
+    overflow-y: auto;
+}
+
+.ranking-title {
+    margin: 5rem 0 2rem;
+}
+
+.level-wrap {
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    opacity: 0;
+    transform: translate(-50%, 80px);
+    pointer-events: none;
+}
+
+.level-wrap.show {
+    animation: up 1s forwards;
+}
+
+.level-up h2 {
+    font-size: 2rem;
+}
+
+.level-up {
+    background: linear-gradient(#00ffff, #1a789f);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(2px 2px 0 #0d3d50);
+}
+
+@keyframes up {
+    5%, 95% {
+        opacity: 1;
+        transform: translate(-50%, 40px);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, 0px);
+    }
+}
+
+.level-up-blink {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+}
+
+.level-wrap.show .level-up-blink {
+    animation: blink .2s forwards;
+    animation-delay: .3s;
+}
+
+@keyframes blink {
+    5% {
+        opacity: 1;
+        filter: brightness(4);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1.5);
+    }
 }
