@@ -351,3 +351,24 @@ Ranking Page
         transform: scale(1.5);
     }
 }
+
+.front-input {
+    box-shadow: inset 0 -2px 0px #28f5ffde;
+    outline: none;
+    border: none;
+    padding: 1rem;
+    background: transparent;
+    font-size: 1.125em;
+    margin-bottom: 1rem;
+    color: #FFF;
+    text-align: center;
+    transition: all .3s;
+}
+
+.front-input:focus {
+    box-shadow: inset 0 5px 6px #28f5ffde, inset 0 -2px 3px #28f5ffde, inset 0 4px 0 #FFF;
+}
+
+.front-input::placeholder {
+    color: #FFF;
+}

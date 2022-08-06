@@ -12,8 +12,8 @@
 </head>
 <body>
 
-    <div class="page flex-col align-center justify-center" id="front-page">
-        <button class="btn ranking-btn icon-btn router" data-to="ranking">
+    <form class="page flex-col align-center justify-center" id="front-page">
+        <button type="button"  class="btn ranking-btn icon-btn router" data-to="ranking">
             <span class="pointer-none">R</span>
         </button>
 
@@ -22,14 +22,17 @@
             <span title="Battle">Battle</span>
         </h1>
 
+
         <div class="how-to-play">
+            <input type="text" placeholder="What's your name" class="front-input" id="name-input" required autocomplete="off">
+
             <p>Using <strong>Space</strong> to Input <strong>Morse Code</strong></p>
             <p>Input Correct Morse Code to <strong>Aim</strong></p>
             <p>Hit <strong>Enter</strong> to Fire!</p>
         </div>
 
-        <button class="btn start-btn display-btn router" data-to="game">Play</button>
-    </div>
+        <button class="btn start-btn display-btn" data-to="game">Play</button>
+    </form>
 
     <div class="page" id="game-page">
         <button class="btn home-btn icon-btn router" data-to="front">

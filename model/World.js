@@ -244,6 +244,7 @@ export default class World {
     }
 
     again() {
+        this.stop();
         document.querySelectorAll(".modal").forEach( modal => {
             modal.classList.remove("show")
         });

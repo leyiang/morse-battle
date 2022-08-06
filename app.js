@@ -5,7 +5,7 @@ import store from "./utils/store.js";
 
 let currentPage = null;
 
-go("ranking");
+go("front");
 
 function go( page ) {
     const selector = "#" + page + "-page";
@@ -49,6 +49,21 @@ window.addEventListener("click", e => {
         world.again();
     }
 });
+
+const form = document.getElementById("front-page");
+form.addEventListener("submit", e => {
+    e.preventDefault();
+
+    const input = document.getElementById("name-input");
+    const val = input.value.trim();
+
+    if( val.length === 0 ) {
+        input.parentElement.reportValidity();
+    }
+
+    world.name = val;
+    go("game");
+})
 
 const screen = document.getElementById("screen");
 const c = screen.getContext("2d");
