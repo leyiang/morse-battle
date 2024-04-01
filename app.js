@@ -15,7 +15,12 @@ function go( page ) {
     }
 
     if( page === "ranking" ) {
-        const list = store.get("ranking");
+        let list = store.get("ranking") || [];
+
+        if( ! Array.isArray(list) ) {
+            list = [];
+        }
+
         list.sort((a, b) => {
             return b.score - a.score;
         });
