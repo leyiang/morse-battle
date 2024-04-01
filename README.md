@@ -9,3 +9,9 @@ Morse Battle is a remake of simple and classic space shuttle game, but you contr
 - Use <Arrow> keys to move the shuttle around
 
 PS: Remember to use your friend's keyboard. :)
+
+## To deploy
+
+I used the [js import syntax], so simply open index.html will not start the app.
+
+To resolve this, try follow this [step by step instruction](https://stackoverflow.com/a/62533794/11134160)
