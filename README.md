@@ -12,6 +12,6 @@ PS: Remember to use your friend's keyboard. :)
 
 ## To deploy
 
-I used the [js import syntax], so simply open index.html will not start the app.
+I used the [js import syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import), so simply open index.html will not start the app.
 
 To resolve this, try follow this [step by step instruction](https://stackoverflow.com/a/62533794/11134160)
